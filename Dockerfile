@@ -1,17 +1,14 @@
-# Start with a base image containing Java runtime
+# Use a base image with Java 17
 FROM openjdk:17-jdk-slim
 
-# Add a volume pointing to /tmp
-VOLUME /tmp
+# Set the working directory inside the container
+WORKDIR /app
 
-# Make port 8761 available to the world outside this container
+# Copy the Maven build artifact (jar file) to the working directory
+COPY target/service-registry-0.0.1-SNAPSHOT.jar pharmacy-pos-branch-service.jar
+
+# Expose the port the application runs on
 EXPOSE 8761
 
-# The application's jar file
-ARG JAR_FILE=target/service-registry-0.0.1-SNAPSHOT.jar
-
-# Add the application's jar to the container
-ADD ${JAR_FILE} service-registry.jar
-
 # Run the jar file
-ENTRYPOINT ["java", "-jar", "/service-registry.jar"]
+ENTRYPOINT ["java", "-jar", "service-registry.jar"]
